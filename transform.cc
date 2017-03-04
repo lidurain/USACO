@@ -77,9 +77,7 @@ int main() {
     fin >> after[i];
   }
 
-  if (nochange(square) == after) {
-    fout << "6";
-  } else if (rotate90(square) == after) {
+  if (rotate90(square) == after) {
     fout << "1";
   } else if (rotate180(square) == after) {
     fout << "2";
@@ -93,6 +91,8 @@ int main() {
     fout << "5";
   } else if (reflection270(square) == after) {
     fout << "5";
+  } else if (nochange(square) == after) {
+    fout << "6";
   } else {
     fout << "7";
   }
