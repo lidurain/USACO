@@ -17,33 +17,27 @@ int main() {
   fin >> total;
   int numFarms;
   fin >> numFarms;
-  // Read the prices from each farm, and sort.
-  vector<int> prices;
-  vector<int> units;
+  // Read the price and unit.
+  std::vector<std::pair<int, int>> farms;
   for (int i = 0; i < numFarms; ++i) {
     int price, unit;
     fin >> price >> unit;
-    // find the correct position;
-    int j;
-    for (j = 0; j < i; ++j) {
-      if (prices[j] > price) {
-        break;
-      }
-    }
-    auto it_prices = prices.begin();
-    auto it_units = units.begin();
-    prices.insert(it_prices + j, price);
-    units.insert(it_units + j, unit);
+    std::pair<int, int> farm(price, unit);
+    farms.push_back(farm);
   }
+
+  std::sort(farms.begin(), farms.end(), [](std::pair<int, int> a, std::pair<int, int> b) {
+    return a.first < b.first;
+  });
 
   int currentUnits = 0;
   int money = 0;
   for (int i  = 0; i < numFarms; ++i) {
-    int getUnits = units[i];
-    if (currentUnits + units[i] > total) {
+    int getUnits = farms[i].second;
+    if (currentUnits + getUnits > total) {
       getUnits=total - currentUnits;
     }
-    money += prices[i] * getUnits;
+    money += farms[i].first * getUnits;
     currentUnits += getUnits;
     if (currentUnits + getUnits == total) {
       break;
