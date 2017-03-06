@@ -22,7 +22,7 @@ int main() {
   for (int i = 0; i < numFarms; ++i) {
     int price, unit;
     fin >> price >> unit;
-    farms.push_back(std::make_pair(price, uint));
+    farms.push_back(std::make_pair(price, unit));
   }
 
   std::sort(farms.begin(), farms.end());
