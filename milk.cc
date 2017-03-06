@@ -22,13 +22,10 @@ int main() {
   for (int i = 0; i < numFarms; ++i) {
     int price, unit;
     fin >> price >> unit;
-    std::pair<int, int> farm(price, unit);
-    farms.push_back(farm);
+    farms.push_back(std::make_pair(price, uint));
   }
 
-  std::sort(farms.begin(), farms.end(), [](std::pair<int, int> a, std::pair<int, int> b) {
-    return a.first < b.first;
-  });
+  std::sort(farms.begin(), farms.end());
 
   int currentUnits = 0;
   int money = 0;
