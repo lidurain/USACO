@@ -10,15 +10,46 @@ LANG: C++11
 
 using namespace std;
 
-bool DigitsInSet(int product, std::vector<int> &digits) {
-  while (product) {
-    auto result = std::find(digits.begin(), digits.end(), product % 10);
-    if (result == digits.end()) {
-      return false;
-    }
-    product /= 10;
+// template<class Iterator, class Predicate>
+// bool for_all(Iterator begin, Iterator end, Predicate pred) {
+//   for (Iterator i = begin; i != end; ++i) {
+//     if (!pred(*i)) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+//
+// if (comparator(a, b)) {
+// }
+//
+// Point origin = ..;
+// sort(points.begin(), points.end(), [&origin](const Point& a, const Point& b) { return IsClockwise(a - origin, b - origin); });
+//
+//
+// class Functor {
+//  public:
+//   Functor(Point& origin) {
+//     this->origin_ = origin;
+//   }
+//   bool Foo(const Point& a, const Point b) {
+//   bool operator()(const Point& a, const Point& b){
+//     return IsClockwise(....);
+//   }
+//
+//  private:
+//   Point origin_;
+// };
+
+bool DigitsInSet(int num, const std::vector<int> &allowed) {
+  std::vector<int> digits;
+  while (num > 0) {
+    digits.push_back(num % 10);
+    num /= 10;
   }
-  return true;
+  return std::all_of(digits.begin(), digits.end(), [&allowed](int x) {
+    return std::binary_search(allowed.begin(), allowed.end(), x);
+  });
 }
 
 int main() {
@@ -36,35 +67,31 @@ int main() {
     fin >> digits[i];
   }
   std::sort(digits.begin(), digits.end());
-  std::vector<int>::iterator it = std::unique(digits.begin(), digits.end());
-  digits.resize(std::distance(digits.begin(),it));
+  digits.erase(std::unique(digits.begin(), digits.end()), digits.end());
   n = digits.size();
   int max = n * n * n * n * n;
-  int abc, a, b, c, d, e;
   int solutions = 0;
   for (int i = 0; i < max; ++i) {
-    int devided = i;
+    int dividend = i;
     std::vector<int> index(5, 0);
-    int j = 4;
-    while (devided) {
-      index[j] = devided % n;
-      devided /= n;
-      --j;
+    for (int j = 0; j < 5; ++j) {
+      index[j] = dividend % n;
+      dividend /= n;
     }
-    a = digits[index[0]];
-    b = digits[index[1]];
-    c = digits[index[2]];
-    abc = 100 * a + 10 * b + c;
-    d = digits[index[3]];
-    e = digits[index[4]];
-    if (abc * e / 100 >= 10 || !DigitsInSet(abc * e, digits)) {
+    int a = digits[index[0]];
+    int b = digits[index[1]];
+    int c = digits[index[2]];
+    int abc = 100 * a + 10 * b + c;
+    int d = digits[index[3]];
+    int e = digits[index[4]];
+    if (abc * e >= 1000 || !DigitsInSet(abc * e, digits)) {
       continue;
     }
-    if (abc * d / 100 >= 10 || !DigitsInSet(abc * d, digits)) {
+    if (abc * d >= 1000 || !DigitsInSet(abc * d, digits)) {
       continue;
     }
     int product = abc * (10 * d + e);
-    if (product / 1000 >= 10 || !DigitsInSet(product, digits)) {
+    if (product >= 10000 || !DigitsInSet(product, digits)) {
       continue;
     }
     ++solutions;
