@@ -20,19 +20,19 @@ int main() {
   // The number of empty stalls between occupied stalls.
   std::vector<int> empty_stalls;
 
-  int last_stall_num = 0;
   for (int i = 0; i < num_cows; ++i) {
     int stall_num;
     fin >> stall_num;
     occupied_stalls.push_back(stall_num);
-    if (i == 0) {
-      last_stall_num = stall_num;
-    } else {
-      if (stall_num - last_stall_num > 1) {
-        empty_stalls.push_back(stall_num - last_stall_num - 1);
-      }
-      last_stall_num = stall_num;
+  }
+  std::sort(occupied_stalls.begin(), occupied_stalls.end());
+  int last_stall_num = occupied_stalls[0];
+  for (int i = 1; i < num_cows; ++i) {
+    int stall_num = occupied_stalls[i];
+    if (stall_num - last_stall_num > 1) {
+      empty_stalls.push_back(stall_num - last_stall_num - 1);
     }
+    last_stall_num = stall_num;
   }
 
   int length = occupied_stalls[num_cows - 1] - occupied_stalls[0] + 1;
