@@ -37,10 +37,10 @@ int main(){
     int min_b = b - 2;
     int max_a = a + 2;
     int max_b = b + 2;
-    if (max_a > N && min_b <= 1) {
+    if (max_a > N && min_b <= max_a - N) {
       min_b += N;
       max_b += N;
-    } else if (max_b > N && min_a <= 1) {
+    } else if (max_b > N && min_a < max_b - N) {
       min_a += N;
       max_a += N;
     }
